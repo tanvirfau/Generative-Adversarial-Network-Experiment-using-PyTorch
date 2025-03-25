@@ -29,7 +29,6 @@ $ cd Generative-Adversarial-Network-Experiment-using-PyTorch
 $ pip install -r requirements.txt
 ```
 
-See also: [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
 ## Table of Contents
   * [Installation](#installation)
