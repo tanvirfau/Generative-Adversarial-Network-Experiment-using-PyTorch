@@ -27,7 +27,7 @@ Clone the repository and install the dependencies see below:
 $ git clone https://github.com/tanvirfau/Generative-Adversarial-Network-Experiment-using-PyTorch
 $ cd Generative-Adversarial-Network-Experiment-using-PyTorch
 $ pip install -r requirements.txt
-
+```bash
 
 See also: [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
