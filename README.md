@@ -1,4 +1,4 @@
-<# Generative Adversarial Network Experiment using PyTorch
+# Generative Adversarial Network Experiment using PyTorch
 
 This project is a fork of [PyTorch-GAN](https://github.com/eriklindernoren/PyTorch-GAN) by Erik Lindernoren.  
 The original project can be found [here](https://github.com/eriklindernoren/PyTorch-GAN).
