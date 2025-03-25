@@ -17,7 +17,7 @@ import torch
 os.makedirs("images", exist_ok=True)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_epochs", type=int, default=200, help="number of epochs of training")
+parser.add_argument("--n_epochs", type=int, default=2, help="number of epochs of training")
 parser.add_argument("--batch_size", type=int, default=64, help="size of the batches")
 parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -52,16 +52,19 @@ class Generator(nn.Module):
         self.init_size = opt.img_size // 4  # Initial size before upsampling
         self.l1 = nn.Sequential(nn.Linear(opt.latent_dim, 128 * self.init_size ** 2))
 
+        # New additional layer
+        self.fc_layer = nn.Linear(128 * self.init_size ** 2, 128 * self.init_size ** 2)  # New fully connected layer
+
         self.conv_blocks = nn.Sequential(
             nn.BatchNorm2d(128),
             nn.Upsample(scale_factor=2),
             nn.Conv2d(128, 128, 3, stride=1, padding=1),
             nn.BatchNorm2d(128, 0.8),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.ReLU(inplace=True),  # Changed to ReLU
             nn.Upsample(scale_factor=2),
             nn.Conv2d(128, 64, 3, stride=1, padding=1),
             nn.BatchNorm2d(64, 0.8),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.ReLU(inplace=True),
             nn.Conv2d(64, opt.channels, 3, stride=1, padding=1),
             nn.Tanh(),
         )
@@ -69,9 +72,11 @@ class Generator(nn.Module):
     def forward(self, noise, labels):
         gen_input = torch.mul(self.label_emb(labels), noise)
         out = self.l1(gen_input)
+        out = self.fc_layer(out)  # Apply the new fully connected layer
         out = out.view(out.shape[0], 128, self.init_size, self.init_size)
         img = self.conv_blocks(out)
         return img
+
 
 
 class Discriminator(nn.Module):
@@ -90,14 +95,15 @@ class Discriminator(nn.Module):
             *discriminator_block(16, 32),
             *discriminator_block(32, 64),
             *discriminator_block(64, 128),
+            *discriminator_block(128, 256),  # Added new layer
         )
 
         # The height and width of downsampled image
-        ds_size = opt.img_size // 2 ** 4
+        ds_size = opt.img_size // 2 ** 5  # Adjusted to account for the new layer
 
         # Output layers
-        self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, 1), nn.Sigmoid())
-        self.aux_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, opt.n_classes), nn.Softmax())
+        self.adv_layer = nn.Sequential(nn.Linear(256 * ds_size ** 2, 1), nn.Sigmoid())
+        self.aux_layer = nn.Sequential(nn.Linear(256 * ds_size ** 2, opt.n_classes), nn.Softmax())
 
     def forward(self, img):
         out = self.conv_blocks(img)
@@ -106,7 +112,6 @@ class Discriminator(nn.Module):
         label = self.aux_layer(out)
 
         return validity, label
-
 
 # Loss functions
 adversarial_loss = torch.nn.BCELoss()
