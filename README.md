@@ -1,11 +1,35 @@
-<p align="center"><img src="assets/logo.png" width="480"\></p>
+<# Generative Adversarial Network Experiment using PyTorch
 
-**This repository has gone stale as I unfortunately do not have the time to maintain it anymore. If you would like to continue the development of it as a collaborator send me an email at eriklindernoren@gmail.com.**
+This project is a fork of [PyTorch-GAN](https://github.com/eriklindernoren/PyTorch-GAN) by Erik Lindernoren.  
+The original project can be found [here](https://github.com/eriklindernoren/PyTorch-GAN).
 
-## PyTorch-GAN
-Collection of PyTorch implementations of Generative Adversarial Network varieties presented in research papers. Model architectures will not always mirror the ones proposed in the papers, but I have chosen to focus on getting the core ideas covered instead of getting every layer configuration right. Contributions and suggestions of GANs to implement are very welcomed.
+## About
 
-<b>See also:</b> [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
+I forked the [PyTorch-GAN](https://github.com/eriklindernoren/PyTorch-GAN) repository to explore different GAN implementations and test the models on new datasets. 
+
+### Modifications include:
+- Added new evaluation metrics for model performance analysis.
+- Implemented additional GAN models like **DCGAN**, **WGAN**, and others.
+- Improved code readability and optimization for better efficiency.
+- Enhanced dataset support for training and testing.
+- Added examples for using different architectures on diverse datasets.
+
+## Features
+- A variety of GAN models such as **DCGAN**, **WGAN**, **CycleGAN**, **Pix2Pix**, etc.
+- Easy-to-use scripts for training models on different datasets.
+- Well-documented codebase with additional features for better evaluation of GANs.
+
+## Installation
+
+Clone the repository and install the dependencies see below:
+
+```bash
+$ git clone https://github.com/tanvirfau/Generative-Adversarial-Network-Experiment-using-PyTorch
+$ cd Generative-Adversarial-Network-Experiment-using-PyTorch
+$ pip install -r requirements.txt
+
+
+See also: [Keras-GAN](https://github.com/eriklindernoren/Keras-GAN)
 
 ## Table of Contents
   * [Installation](#installation)
